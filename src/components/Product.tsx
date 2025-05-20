@@ -2,7 +2,7 @@ import type { FunctionComponent } from "react";
 
 type Props = {
   price: number;
-  quantity: number;
+  quantity?: number;
   title: string;
 };
 
