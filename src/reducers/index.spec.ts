@@ -28,6 +28,7 @@ describe("selectors", () => {
               price: 9.99,
             },
           },
+          visibleIds: [1, 2, 3],
         },
       };
       expect(getTotal(state)).toBe("27.93");
@@ -60,6 +61,7 @@ describe("selectors", () => {
               price: 9.99,
             },
           },
+          visibleIds: [1, 2, 3],
         },
       };
 

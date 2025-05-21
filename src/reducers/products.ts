@@ -4,7 +4,14 @@
 import { combineReducers } from "redux";
 import { ADD_TO_CART, RECEIVE_PRODUCTS } from "../constants/ActionTypes";
 
-const products = (state, action) => {
+type Product = {
+  id: number;
+  title: string;
+  price: number;
+  inventory: number;
+};
+
+const products = (state: Product, action) => {
   switch (action.type) {
     case ADD_TO_CART:
       return {
@@ -16,7 +23,7 @@ const products = (state, action) => {
   }
 };
 
-const byId = (state = {}, action) => {
+const byId = (state: Record<number, Product> = {}, action) => {
   switch (action.type) {
     case RECEIVE_PRODUCTS:
       return {
@@ -38,7 +45,7 @@ const byId = (state = {}, action) => {
   }
 };
 
-const visibleIds = (state = [], action) => {
+const visibleIds = (state: number[] = [], action) => {
   switch (action.type) {
     case RECEIVE_PRODUCTS:
       return action.products.map((product) => product.id);

@@ -7,12 +7,17 @@ import {
   CHECKOUT_REQUEST,
 } from "../constants/ActionTypes";
 
-const initialState = {
+type CartState = {
+  addedIds: number[];
+  quantityById: Record<number, number>;
+};
+
+const initialState: CartState = {
   addedIds: [],
   quantityById: {},
-} as const;
+};
 
-const addedIds = (state = initialState.addedIds, action) => {
+const addedIds = (state: CartState = initialState.addedIds, action) => {
   switch (action.type) {
     case ADD_TO_CART:
       if (state.indexOf(action.productId) !== -1) {
@@ -24,7 +29,7 @@ const addedIds = (state = initialState.addedIds, action) => {
   }
 };
 
-const quantityById = (state = initialState.quantityById, action) => {
+const quantityById = (state: CartState = initialState.quantityById, action) => {
   switch (action.type) {
     case ADD_TO_CART:
       const { productId } = action;
@@ -34,12 +39,12 @@ const quantityById = (state = initialState.quantityById, action) => {
   }
 };
 
-export const getQuantity = (state, productId) =>
+export const getQuantity = (state: CartState, productId: number) =>
   state.quantityById[productId] || 0;
 
 export const getAddedIds = (state) => state.addedIds;
 
-const cart = (state = initialState, action) => {
+const cart = (state: CartState = initialState, action) => {
   switch (action.type) {
     case CHECKOUT_REQUEST:
       return initialState;

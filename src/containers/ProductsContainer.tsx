@@ -2,7 +2,7 @@
 // @ts-nocheck
 
 import type { FunctionComponent } from "react";
-import { connect } from "react-redux";
+import { useAppDispatch, useAppSelector } from "~/app/hooks";
 import { addToCart } from "../actions";
 import ProductItem from "../components/ProductItem";
 import ProductsList from "../components/ProductsList";
@@ -18,23 +18,23 @@ type Props = {
   addToCart: (id: number) => void;
 };
 
-const ProductsContainer: FunctionComponent<Props> = ({
-  products,
-  addToCart,
-}) => (
-  <ProductsList title="Products">
-    {products.map((product) => (
-      <ProductItem
-        key={product.id}
-        product={product}
-        onAddToCartClicked={() => addToCart(product.id)}
-      />
-    ))}
-  </ProductsList>
-);
+const ProductsContainer: FunctionComponent = () => {
+  const dispatch = useAppDispatch();
+  const products = useAppSelector((state) =>
+    getVisibleProducts(state.products),
+  );
 
-const mapStateToProps = (state) => ({
-  products: getVisibleProducts(state.products),
-});
+  return (
+    <ProductsList title="Products">
+      {products.map((product) => (
+        <ProductItem
+          key={product.id}
+          product={product}
+          onAddToCartClicked={() => dispatch(addToCart(product.id))}
+        />
+      ))}
+    </ProductsList>
+  );
+};
 
-export default connect(mapStateToProps, { addToCart })(ProductsContainer);
+export default ProductsContainer;
