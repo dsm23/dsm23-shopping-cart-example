@@ -2,6 +2,7 @@
 // @ts-nocheck
 
 import { combineReducers } from "redux";
+import { RootState } from "~/app/store";
 import cart, * as fromCart from "./cart";
 import products, * as fromProducts from "./products";
 
@@ -10,11 +11,13 @@ export default combineReducers({
   products,
 });
 
-const getAddedIds = (state) => fromCart.getAddedIds(state.cart);
-const getQuantity = (state, id) => fromCart.getQuantity(state.cart, id);
-const getProduct = (state, id) => fromProducts.getProduct(state.products, id);
+const getAddedIds = (state: RootState) => fromCart.getAddedIds(state.cart);
+const getQuantity = (state: RootState, id: number) =>
+  fromCart.getQuantity(state.cart, id);
+const getProduct = (state: RootState, id: number) =>
+  fromProducts.getProduct(state.products, id);
 
-export const getTotal = (state) =>
+export const getTotal = (state: RootState) =>
   getAddedIds(state)
     .reduce(
       (total, id) =>
@@ -23,7 +26,7 @@ export const getTotal = (state) =>
     )
     .toFixed(2);
 
-export const getCartProducts = (state) =>
+export const getCartProducts = (state: RootState) =>
   getAddedIds(state).map((id) => ({
     ...getProduct(state, id),
     quantity: getQuantity(state, id),

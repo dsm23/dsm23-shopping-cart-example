@@ -2,7 +2,7 @@
 // @ts-nocheck
 
 import type { FunctionComponent } from "react";
-import { connect } from "react-redux";
+import { useAppDispatch, useAppSelector } from "~/app/hooks";
 import { checkout } from "../actions";
 import Cart from "../components/Cart";
 import { getCartProducts, getTotal } from "../reducers";
@@ -20,21 +20,19 @@ type Props = {
   checkout: (products: Product[]) => void;
 };
 
-const CartContainer: FunctionComponent<Props> = ({
-  products,
-  total,
-  checkout,
-}) => (
-  <Cart
-    products={products}
-    total={total}
-    onCheckoutClicked={() => checkout(products)}
-  />
-);
+const CartContainer: FunctionComponent = () => {
+  const dispatch = useAppDispatch();
 
-const mapStateToProps = (state) => ({
-  products: getCartProducts(state),
-  total: getTotal(state),
-});
+  const products = useAppSelector(getCartProducts);
+  const total = useAppSelector(getTotal);
 
-export default connect(mapStateToProps, { checkout })(CartContainer);
+  return (
+    <Cart
+      products={products}
+      total={total}
+      onCheckoutClicked={() => dispatch(checkout(products))}
+    />
+  );
+};
+
+export default CartContainer;
