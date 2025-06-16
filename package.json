@@ -89,7 +89,7 @@
     "tailwindcss": "4.1.10",
     "typed-query-selector": "2.12.0",
     "typescript": "5.8.3",
-    "typescript-eslint": "8.34.0",
+    "typescript-eslint": "8.34.1",
     "vite": "6.3.5",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "3.2.3"
