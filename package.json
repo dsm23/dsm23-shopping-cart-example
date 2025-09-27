@@ -60,7 +60,7 @@
     "@types/react": "19.1.14",
     "@types/react-dom": "19.1.9",
     "@types/redux-logger": "3.0.13",
-    "@vitejs/plugin-react": "5.0.3",
+    "@vitejs/plugin-react": "5.0.4",
     "@vitest/browser": "3.2.4",
     "@vitest/coverage-v8": "3.2.4",
     "autoprefixer": "10.4.21",
