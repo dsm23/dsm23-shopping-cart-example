@@ -1,3 +1,4 @@
+import { playwright } from "@vitest/browser-playwright";
 import {
   coverageConfigDefaults,
   defaultExclude,
@@ -5,18 +6,14 @@ import {
   mergeConfig,
 } from "vitest/config";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import storybookTest from "@storybook/addon-vitest/vitest-plugin";
 import viteConfig from "./vite.config";
-
-const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default mergeConfig(
   viteConfig,
   defineConfig({
     test: {
       coverage: {
-        all: true,
         include: ["src/**/*.[jt]s?(x)"],
         exclude: [
           "src/**/*.stories.[jt]s?(x)",
@@ -52,14 +49,16 @@ export default mergeConfig(
           plugins: [
             // The plugin will run tests for the stories defined in your Storybook config
             // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
-            storybookTest({ configDir: path.join(dirname, ".storybook") }),
+            storybookTest({
+              configDir: path.join(import.meta.dirname, ".storybook"),
+            }),
           ],
           test: {
             name: "storybook",
             browser: {
               enabled: true,
               headless: true,
-              provider: "playwright",
+              provider: playwright(),
               instances: [{ browser: "chromium" }],
             },
             setupFiles: [".storybook/vitest.setup.ts"],
