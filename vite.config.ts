@@ -12,6 +12,8 @@ export default defineConfig({
     eslint({
       formatter: "stylish",
     }),
-    tsconfigPaths(),
+    tsconfigPaths({
+      projectDiscovery: "lazy",
+    }),
   ],
 });
