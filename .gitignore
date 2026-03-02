@@ -26,7 +26,6 @@ dist-ssr
 # Cache Files
 .eslintmdcache
 .stylelintcache
-.prettiercache
 
 # @nabla/vite-plugin-eslint
 .eslintcache
