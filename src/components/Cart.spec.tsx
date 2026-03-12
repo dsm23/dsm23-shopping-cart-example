@@ -6,7 +6,13 @@ import Cart from "./Cart";
 describe("component", () => {
   describe("Cart component", () => {
     it("should display total", () => {
-      render(<Cart total="76" products={[]} onCheckoutClicked={vi.fn()} />);
+      render(
+        <Cart
+          total="76"
+          products={[]}
+          onCheckoutClicked={vi.fn<() => void>()}
+        />,
+      );
 
       expect(
         screen.getByText("Total: $76", { selector: "p" }),
@@ -14,7 +20,13 @@ describe("component", () => {
     });
 
     it("should display add some products message", () => {
-      render(<Cart total="0" products={[]} onCheckoutClicked={vi.fn()} />);
+      render(
+        <Cart
+          total="0"
+          products={[]}
+          onCheckoutClicked={vi.fn<() => void>()}
+        />,
+      );
 
       expect(
         screen.getByText("Please add some products to cart."),
@@ -22,7 +34,13 @@ describe("component", () => {
     });
 
     it("should disable button", () => {
-      render(<Cart total="0" products={[]} onCheckoutClicked={vi.fn()} />);
+      render(
+        <Cart
+          total="0"
+          products={[]}
+          onCheckoutClicked={vi.fn<() => void>()}
+        />,
+      );
 
       expect(screen.getByRole("button")).toBeDisabled();
     });
@@ -39,7 +57,11 @@ describe("component", () => {
 
       it("should render products", () => {
         render(
-          <Cart total="9.99" products={product} onCheckoutClicked={vi.fn()} />,
+          <Cart
+            total="9.99"
+            products={product}
+            onCheckoutClicked={vi.fn<() => void>()}
+          />,
         );
 
         expect(screen.getByText("Product 1 - $9.99 x 1")).toBeInTheDocument();
@@ -47,14 +69,18 @@ describe("component", () => {
 
       it("should not disable button", () => {
         render(
-          <Cart total="9.99" products={product} onCheckoutClicked={vi.fn()} />,
+          <Cart
+            total="9.99"
+            products={product}
+            onCheckoutClicked={vi.fn<() => void>()}
+          />,
         );
 
         expect(screen.getByRole("button")).toBeEnabled();
       });
 
       it("should call action on button click", () => {
-        const mockFn = vi.fn();
+        const mockFn = vi.fn<() => void>();
 
         render(
           <Cart total="9.99" products={product} onCheckoutClicked={mockFn} />,

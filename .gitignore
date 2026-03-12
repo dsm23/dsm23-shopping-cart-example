@@ -24,11 +24,7 @@ dist-ssr
 *.sw?
 
 # Cache Files
-.eslintmdcache
 .stylelintcache
-
-# @nabla/vite-plugin-eslint
-.eslintcache
 
 # coverage
 coverage/
