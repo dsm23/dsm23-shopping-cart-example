@@ -13,26 +13,39 @@ describe("component", () => {
   describe("ProductItem component", () => {
     it("should render product", () => {
       const { container } = render(
-        <ProductItem product={product} onAddToCartClicked={vi.fn()} />,
+        <ProductItem
+          product={product}
+          onAddToCartClicked={vi.fn<() => void>()}
+        />,
       );
 
       expect(container.firstChild).toBeInTheDocument();
     });
 
     it("should render Add To Cart message", () => {
-      render(<ProductItem product={product} onAddToCartClicked={vi.fn()} />);
+      render(
+        <ProductItem
+          product={product}
+          onAddToCartClicked={vi.fn<() => void>()}
+        />,
+      );
 
       expect(screen.getByRole("button")).toHaveTextContent("Add to cart");
     });
 
     it("should not disable button", () => {
-      render(<ProductItem product={product} onAddToCartClicked={vi.fn()} />);
+      render(
+        <ProductItem
+          product={product}
+          onAddToCartClicked={vi.fn<() => void>()}
+        />,
+      );
 
       expect(screen.getByRole("button")).toBeEnabled();
     });
 
     it("should call action on button click", () => {
-      const mockFn = vi.fn();
+      const mockFn = vi.fn<() => void>();
 
       render(<ProductItem product={product} onAddToCartClicked={mockFn} />);
 
@@ -46,7 +59,7 @@ describe("component", () => {
         render(
           <ProductItem
             product={{ ...product, inventory: 0 }}
-            onAddToCartClicked={vi.fn()}
+            onAddToCartClicked={vi.fn<() => void>()}
           />,
         );
 
@@ -57,7 +70,7 @@ describe("component", () => {
         render(
           <ProductItem
             product={{ ...product, inventory: 0 }}
-            onAddToCartClicked={vi.fn()}
+            onAddToCartClicked={vi.fn<() => void>()}
           />,
         );
 
