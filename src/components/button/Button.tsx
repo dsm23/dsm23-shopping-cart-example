@@ -5,7 +5,7 @@ import type { VariantProps } from "class-variance-authority";
 import { cn } from "~/utils";
 import buttonVariants from "./buttonVariants";
 
-export interface ButtonProps
+interface ButtonProps
   extends
     ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
