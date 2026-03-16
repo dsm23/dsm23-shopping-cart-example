@@ -6,11 +6,6 @@ import { RootState } from "~/app/store";
 import cart, * as fromCart from "./cart";
 import products, * as fromProducts from "./products";
 
-export default combineReducers({
-  cart,
-  products,
-});
-
 const getAddedIds = (state: RootState) => fromCart.getAddedIds(state.cart);
 const getQuantity = (state: RootState, id: number) =>
   fromCart.getQuantity(state.cart, id);
