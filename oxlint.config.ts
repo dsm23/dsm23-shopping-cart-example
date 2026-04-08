@@ -9,8 +9,9 @@ export default defineConfig({
     "react",
     "typescript",
     "unicorn",
+    "vitest",
   ],
-  jsPlugins: ["eslint-plugin-react-dom"],
+  jsPlugins: ["eslint-plugin-better-tailwindcss"],
   categories: {
     correctness: "warn",
     suspicious: "warn",
@@ -20,12 +21,10 @@ export default defineConfig({
     nursery: "warn",
   },
   env: {
-    builtin: true,
     browser: true,
+    node: true,
     serviceworker: true,
-  },
-  globals: {
-    process: "readonly",
+    worker: true,
   },
   ignorePatterns: [
     "coverage/",
@@ -55,23 +54,31 @@ export default defineConfig({
         allow: ["debug", "warn", "info", "trace", "warn"],
       },
     ],
-    "no-restricted-syntax": [
-      "warn",
-      {
-        selector:
-          "ImportDeclaration[source.value='react'][specifiers.0.type='ImportDefaultSpecifier']",
-        message:
-          "Default React import not allowed since we use the TypeScript jsx-transform. If you need a global type that collides with a React named export (such as `MouseEvent`), try using `globalThis.MouseHandler`",
-      },
-      {
-        selector:
-          "ImportDeclaration[source.value='react'] :matches(ImportNamespaceSpecifier)",
-        message:
-          "Named * React import is not allowed. Please import what you need from React with Named Imports",
-      },
-    ],
     "no-negated-condition": "off",
     "no-optional-chaining": "off",
+    "no-restricted-imports": [
+      "warn",
+      {
+        paths: [
+          {
+            name: "react",
+            importNames: ["default"],
+            message:
+              "Named * React import is not allowed. Please import what you need from React with Named Imports",
+          },
+        ],
+      },
+    ],
+    "better-tailwindcss/enforce-canonical-classes": "warn",
+    // "better-tailwindcss/enforce-consistent-class-order": "warn",
+    "better-tailwindcss/enforce-consistent-important-position": "warn",
+    "better-tailwindcss/enforce-consistent-variable-syntax": "warn",
+    "better-tailwindcss/enforce-shorthand-classes": "warn",
+    "better-tailwindcss/no-conflicting-classes": "warn",
+    "better-tailwindcss/no-deprecated-classes": "warn",
+    "better-tailwindcss/no-duplicate-classes": "warn",
+    "better-tailwindcss/no-unnecessary-whitespace": "warn",
+    "better-tailwindcss/no-unknown-classes": "warn",
     "jsx-a11y/anchor-is-valid": "off",
     "jsx-a11y/anchor-has-content": "off",
     "oxc/no-async-await": "off",
@@ -81,18 +88,6 @@ export default defineConfig({
     "react/jsx-filename-extension": "off",
     "react/no-multi-comp": "off",
     "react/react-in-jsx-scope": "off",
-    "react-dom/no-dangerously-set-innerhtml": "warn",
-    "react-dom/no-dangerously-set-innerhtml-with-children": "warn",
-    "react-dom/no-find-dom-node": "warn",
-    "react-dom/no-flush-sync": "warn",
-    "react-dom/no-hydrate": "warn",
-    "react-dom/no-namespace": "warn",
-    "react-dom/no-render": "warn",
-    "react-dom/no-render-return-value": "warn",
-    "react-dom/no-script-url": "warn",
-    "react-dom/no-unsafe-iframe-sandbox": "warn",
-    "react-dom/no-use-form-state": "warn",
-    "react-dom/no-void-elements-with-children": "warn",
     "typescript/consistent-type-imports": [
       "warn",
       {
@@ -113,7 +108,21 @@ export default defineConfig({
     // TODO: remove the following rule when reducers are refactored to be more type safe
     "unicorn/no-abusive-eslint-disable": "off",
     "vitest/consistent-vitest-vi": "warn",
-    "vitest/no-importing-vitest-globals": "warn",
+    "vitest/no-conditional-expect": "off",
+    "vitest/no-conditional-in-test": "off",
+    "vitest/no-importing-vitest-globals": "off",
+    "vitest/no-standalone-expect": [
+      "warn",
+      {
+        additionalTestBlockFunctions: ["fc.property"],
+      },
+    ],
+    "vitest/require-test-timeout": "off",
+  },
+  settings: {
+    "better-tailwindcss": {
+      entryPoint: "./src/index.css",
+    },
   },
   overrides: [
     {
