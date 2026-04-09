@@ -2,16 +2,23 @@ import { describe, expect, it, vi } from "vitest";
 import { render } from "@testing-library/react";
 import App from "./App";
 
-vi.stubGlobal("matchMedia", (query: string) => ({
-  matches: false,
-  media: query,
-  onchange: null,
-  addListener: vi.fn(), // Deprecated
-  removeListener: vi.fn(), // Deprecated
-  addEventListener: vi.fn(),
-  removeEventListener: vi.fn(),
-  dispatchEvent: vi.fn(),
-}));
+// https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
+Object.defineProperty(window, "matchMedia", {
+  writable: true,
+  value: vi.fn<(query: string) => MediaQueryList>().mockImplementation(
+    (query) =>
+      ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: vi.fn<() => void>(), // deprecated
+        removeListener: vi.fn<() => void>(), // deprecated
+        addEventListener: vi.fn<() => void>(),
+        removeEventListener: vi.fn<() => void>(),
+        dispatchEvent: vi.fn<() => boolean>(() => false),
+      }) satisfies MediaQueryList,
+  ),
+});
 
 describe("component", () => {
   describe("App", () => {
