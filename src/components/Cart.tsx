@@ -1,4 +1,5 @@
 import type { FunctionComponent } from "react";
+import { Button } from "~/components/button";
 import Product from "./Product";
 
 type Props = {
@@ -36,9 +37,9 @@ const Cart: FunctionComponent<Props> = ({
       <h3>Your Cart</h3>
       <div>{nodes}</div>
       <p>Total: ${total}</p>
-      <button onClick={onCheckoutClicked} disabled={!hasProducts}>
+      <Button onClick={onCheckoutClicked} disabled={!hasProducts}>
         Checkout
-      </button>
+      </Button>
     </div>
   );
 };

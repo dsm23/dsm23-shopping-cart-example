@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes, FunctionComponent } from "react";
+import { Button } from "~/components/button";
 import Product from "./Product";
 
 type Props = {
@@ -20,9 +21,9 @@ const ProductItem: FunctionComponent<Props> = ({
       price={product.price}
       quantity={product.inventory}
     />
-    <button onClick={onAddToCartClicked} disabled={product.inventory === 0}>
+    <Button onClick={onAddToCartClicked} disabled={product.inventory === 0}>
       {product.inventory > 0 ? "Add to cart" : "Sold Out"}
-    </button>
+    </Button>
   </div>
 );
 
