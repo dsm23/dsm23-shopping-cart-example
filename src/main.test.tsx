@@ -1,13 +1,15 @@
 import { describe, expect, it, vi } from "vitest";
+import type { Root } from "react-dom/client";
 
-vi.mock("./App", () => ({
+vi.mock("./app", () => ({
   __esModule: true,
   default: () => <div>Hello, World!</div>,
 }));
 
 vi.mock("react-dom/client", () => ({
-  createRoot: vi.fn(() => ({
-    render: vi.fn(),
+  createRoot: vi.fn<(_container: HTMLElement) => Root>(() => ({
+    render: vi.fn<() => void>(),
+    unmount: vi.fn<() => void>(),
   })),
 }));
 
