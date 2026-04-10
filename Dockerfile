@@ -18,8 +18,6 @@ ENV HUSKY=0
 
 # Copy package manager lock files
 COPY package.json pnpm-lock.yaml ./
-# for the sake of the prepare script
-COPY .husky/ ./.husky/
 
 # Install dependencies
 RUN corepack enable pnpm
