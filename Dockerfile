@@ -14,7 +14,7 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-ENV HUSKY=0
+ENV LEFTHOOK=0
 
 # Copy package manager lock files
 COPY package.json pnpm-lock.yaml ./
