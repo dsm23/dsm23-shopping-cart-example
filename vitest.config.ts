@@ -61,7 +61,6 @@ export default mergeConfig(
               provider: playwright(),
               instances: [{ browser: "chromium" }],
             },
-            setupFiles: [".storybook/vitest.setup.ts"],
           },
         },
       ],
