@@ -18,7 +18,7 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@base-ui/react": "1.4.0",
+    "@base-ui/react": "1.4.1",
     "@reduxjs/toolkit": "2.11.2",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
