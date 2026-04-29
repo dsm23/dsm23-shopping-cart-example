@@ -3,10 +3,6 @@ import type { KnipConfig } from "knip";
 const config: KnipConfig = {
   tags: ["-knipignore"],
   entry: ["src/**/*.d.ts"],
-  ignoreDependencies: [
-    "eslint-plugin-better-tailwindcss",
-    "eslint-plugin-storybook",
-  ],
   oxlint: {
     config: ["oxlint.config.ts"],
   },
