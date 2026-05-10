@@ -4,7 +4,7 @@ import { expect, test } from "@playwright/test";
 test("has title", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page).toHaveTitle(/Redux Shopping Cart example/);
+  await expect(page).toHaveTitle(/Redux Shopping Cart example/v);
 });
 
 test("has heading", async ({ page }) => {
