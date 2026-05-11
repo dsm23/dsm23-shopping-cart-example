@@ -15,8 +15,8 @@ ENV LEFTHOOK=0
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml  ./
 
-RUN pnpm runtime set node $NODE_VERSION -g
-RUN pnpm install --frozen-lockfile
+RUN pnpm runtime set node "$NODE_VERSION" -g \
+  && pnpm install --frozen-lockfile
 
 # Stage 2: Build stage
 FROM base AS builder
@@ -26,8 +26,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN pnpm runtime set node $NODE_VERSION -g
-RUN pnpm run build
+RUN pnpm runtime set node "$NODE_VERSION" -g \
+  && pnpm run build
 
 # Stage 3: Production image
 FROM runtime
