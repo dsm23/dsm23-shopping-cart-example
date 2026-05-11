@@ -1,20 +1,18 @@
 # syntax=docker.io/docker/dockerfile:1@sha256:2780b5c3bab67f1f76c781860de469442999ed1a0d7992a5efdf2cffc0e3d769
 
 # Stage 1: Base image for dependencies and build
-FROM node:24.15.0-alpine@sha256:d1b3b4da11eefd5941e7f0b9cf17783fc99d9c6fc34884a665f40a06dbdfc94f AS base
-
-# corepack is broken https://github.com/nodejs/corepack/issues/612
-# corepack was fixed but is will be removed from node from v25+
-# TODO: re-add corepack after it's been removed
-# RUN npm install -g corepack@latest
+FROM node:26.1.0-alpine@sha256:e71ac5e964b9201072425d59d2e876359efa25dc96bb1768cb73295728d6e4ea AS base
+FROM nginx:1.30.0-alpine-slim@sha256:2fb5d772cea6ef1a8dab525df1b9485289eee167d26af9613fce27a12c060caa AS runtime
 
 # Install dependencies only when needed
 FROM base AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
+# Check https://github.com/nodejs/docker-node/tree/37368d3488740a777bd17b324791e9136d90ef57#nodealpine to understand why gcompat might be needed.
+RUN apk add --no-cache gcompat=1.1.0-r4
 WORKDIR /app
 
 ENV LEFTHOOK=0
+
+RUN npm install -g corepack@latest
 
 # Copy package manager lock files
 COPY package.json pnpm-lock.yaml ./
@@ -28,6 +26,8 @@ FROM base AS builder
 
 WORKDIR /app
 
+RUN npm install -g corepack@latest
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
@@ -36,7 +36,7 @@ RUN corepack enable pnpm
 RUN pnpm run build
 
 # Stage 3: Production image
-FROM nginx:1.30.0-alpine-slim@sha256:2fb5d772cea6ef1a8dab525df1b9485289eee167d26af9613fce27a12c060caa AS runner
+FROM runtime
 
 # Copy built static files to nginx's default public folder
 COPY --from=builder /app/dist /usr/share/nginx/html
