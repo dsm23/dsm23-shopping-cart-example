@@ -1,24 +1,21 @@
 # syntax=docker.io/docker/dockerfile:1@sha256:2780b5c3bab67f1f76c781860de469442999ed1a0d7992a5efdf2cffc0e3d769
 
-# Stage 1: Base image for dependencies and build
-FROM node:26.1.0-alpine@sha256:e71ac5e964b9201072425d59d2e876359efa25dc96bb1768cb73295728d6e4ea AS base
+FROM ghcr.io/pnpm/pnpm:11.0.8@sha256:f844aa1b0df465ac86fdf51374bae26c63af24aac33d91b4c7916492cf3793ff AS base
 FROM nginx:1.30.0-alpine-slim@sha256:2fb5d772cea6ef1a8dab525df1b9485289eee167d26af9613fce27a12c060caa AS runtime
 
-# Install dependencies only when needed
+# renovate: datasource=node-version depName=node
+ARG NODE_VERSION="26.1.0"
+
+# Stage 1: Install dependencies
 FROM base AS deps
-# Check https://github.com/nodejs/docker-node/tree/37368d3488740a777bd17b324791e9136d90ef57#nodealpine to understand why gcompat might be needed.
-RUN apk add --no-cache gcompat=1.1.0-r4
+
 WORKDIR /app
 
 ENV LEFTHOOK=0
 
-RUN npm install -g corepack@latest
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml  ./
 
-# Copy package manager lock files
-COPY package.json pnpm-lock.yaml ./
-
-# Install dependencies
-RUN corepack enable pnpm
+RUN pnpm runtime set node $NODE_VERSION -g
 RUN pnpm install --frozen-lockfile
 
 # Stage 2: Build stage
@@ -26,13 +23,10 @@ FROM base AS builder
 
 WORKDIR /app
 
-RUN npm install -g corepack@latest
-
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build the Vite project
-RUN corepack enable pnpm
+RUN pnpm runtime set node $NODE_VERSION -g
 RUN pnpm run build
 
 # Stage 3: Production image
